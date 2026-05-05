@@ -1,5 +1,22 @@
 #!/bin/bash
 
+# Check if running on Arch Linux
+if [[ ! -f /etc/arch-release ]]; then
+    echo "This script is designed for Arch Linux only."
+    exit 1
+fi
+
+# Install paru if not present
+if ! command -v paru &> /dev/null; then
+    echo "Installing paru AUR helper..."
+    sudo pacman -S --needed --noconfirm base-devel git
+    git clone https://aur.archlinux.org/paru.git /tmp/paru
+    cd /tmp/paru
+    makepkg -si --noconfirm
+    cd -
+    rm -rf /tmp/paru
+fi
+
 # Define colors
 GREEN="\033[0;32m"
 RED="\033[0;31m"
@@ -51,6 +68,13 @@ install_tools() {
     display_message "${YELLOW}" "#######################################################"
     display_message "${NC}" ""
 
+    # Update system
+    display_message "${YELLOW}" "Updating system packages..."
+    paru -Syu --noconfirm
+    display_message "${GREEN}" "System updated successfully."
+    display_message "${BLUE}" "#######################################################"
+    display_message "${NC}" ""
+
     # Prompt user to confirm installation
     read -p "$(display_message "${BLUE}" "\nAre you sure you want to install all the tools? (y/n) ")" choice
 
@@ -60,93 +84,93 @@ install_tools() {
 
         # Install subdomain enumeration tools
         display_message "${GREEN}" "Installing subdomain enumeration tools..."
-        sudo apt-get update -y && sudo apt-get install -y amass subfinder assetfinder subdomainizer sublister findomain
+        paru -S --noconfirm amass subfinder assetfinder subdomainizer sublister findomain
         display_message "${GREEN}" "Subdomain enumeration tools installed successfully."
-                display_message "${BLUE}" "#######################################################"
+        display_message "${BLUE}" "#######################################################"
         display_message "${NC}" ""
 
         # Install subdomain takeover tools
         display_message "${GREEN}" "Installing subdomain takeover tools..."
-        sudo apt-get install -y subjack subover autosubtakeover tko-subs
+        paru -S --noconfirm subjack subover autosubtakeover tko-subs
         display_message "${GREEN}" "Subdomain takeover tools installed successfully."
-                display_message "${BLUE}" "#######################################################"
+        display_message "${BLUE}" "#######################################################"
         display_message "${NC}" ""
 
         # Install cloud workflow tools
         display_message "${GREEN}" "Installing cloud workflow tools..."
-        sudo apt-get install -y awscli aws-recon festin lazys3 s3brute flumberboozle slurp
+        paru -S --noconfirm aws-cli aws-recon festin lazys3 s3brute flumberboozle slurp
         display_message "${GREEN}" "Cloud workflow tools installed successfully."
-                display_message "${BLUE}" "#######################################################"
+        display_message "${BLUE}" "#######################################################"
         display_message "${NC}" ""
 
         # Install fuzzing tools
         display_message "${GREEN}" "Installing fuzzing tools..."
-        sudo apt-get install -y gobuster wfuzz ffuf dirsearch
+        paru -S --noconfirm gobuster wfuzz ffuf dirsearch
         display_message "${GREEN}" "Fuzzing tools installed successfully."
-                display_message "${BLUE}" "#######################################################"
+        display_message "${BLUE}" "#######################################################"
         display_message "${NC}" ""
 
         # Install visual inspection tools
         display_message "${GREEN}" "Installing visual inspection tools..."
-        sudo apt-get install -y aquatone gowitness httpscreenshot
+        paru -S --noconfirm aquatone gowitness httpscreenshot
         display_message "${GREEN}" "Visual inspection tools installed successfully."
-                display_message "${BLUE}" "#######################################################"
+        display_message "${BLUE}" "#######################################################"
         display_message "${NC}" ""
 
         # Install content discovery tools
         display_message "${GREEN}" "Installing content discovery tools..."
-        sudo apt-get install -y gospider hakrawler photon paramspider
+        paru -S --noconfirm gospider hakrawler photon paramspider
         display_message "${GREEN}" "Content discovery tools installed successfully."
-                display_message "${BLUE}" "#######################################################"
+        display_message "${BLUE}" "#######################################################"
         display_message "${NC}" ""
 
         # Install CMS tools
-        display_message "${GREEN}" "Installing CMS tools tools..."
-        sudo apt-get install -y wpscan drupwn wig
+        display_message "${GREEN}" "Installing CMS tools..."
+        paru -S --noconfirm wpscan drupwn wig
         display_message "${GREEN}" "CMS tools installed successfully."
-                display_message "${BLUE}" "#######################################################"
+        display_message "${BLUE}" "#######################################################"
         display_message "${NC}" ""
 
         # Install GIT enum tools
         display_message "${GREEN}" "Installing GIT enum tools..."
-        sudo apt-get install -y githound gitgraber trufflehog gitscanner
+        paru -S --noconfirm githound gitgraber trufflehog gitscanner
         display_message "${GREEN}" "GIT enum tools installed successfully."
-                display_message "${BLUE}" "#######################################################"
+        display_message "${BLUE}" "#######################################################"
         display_message "${NC}" ""
 
         # Install frameworks
         display_message "${GREEN}" "Installing frameworks..."
-        sudo apt-get install -y metasploit-framework armitage beef
+        paru -S --noconfirm metasploit-framework armitage beef
         display_message "${GREEN}" "Frameworks installed successfully."
-                display_message "${BLUE}" "#######################################################"
+        display_message "${BLUE}" "#######################################################"
         display_message "${NC}" ""
 
         # Install wordlists
         display_message "${GREEN}" "Installing wordlists..."
-        sudo apt-get install -y wordlists seclists dirb
+        paru -S --noconfirm wordlists seclists dirb
         display_message "${GREEN}" "Wordlists installed successfully."
-                display_message "${BLUE}" "#######################################################"
+        display_message "${BLUE}" "#######################################################"
         display_message "${NC}" ""
 
         # Install port scanning tools
         display_message "${GREEN}" "Installing port scanning tools..."
-        sudo apt-get install -y nmap masscan unicornscan
+        paru -S --noconfirm nmap masscan unicornscan
         display_message "${GREEN}" "Port scanning tools installed successfully."
-                display_message "${BLUE}" "#######################################################"
+        display_message "${BLUE}" "#######################################################"
         display_message "${NC}" ""
 
         # Install fingerprint & CVE tools
         display_message "${GREEN}" "Installing fingerprint & CVE tools..."
-        sudo apt-get install -y whatweb nikto wpscan sqlmap joomscan
+        paru -S --noconfirm whatweb nikto wpscan sqlmap joomscan
         display_message "${GREEN}" "Fingerprint & CVE tools installed successfully."
-                display_message "${BLUE}" "#######################################################"
+        display_message "${BLUE}" "#######################################################"
         display_message "${NC}" ""
 
         # Install JS enum tools
         display_message "${GREEN}" "Installing JS enum tools..."
-        sudo apt-get install -y linkfinder jsbeautifier jsdetox subjs
+        paru -S --noconfirm linkfinder jsbeautifier jsdetox subjs
         display_message "${GREEN}" "JS enum tools installed successfully."
-                display_message "${BLUE}" "#######################################################"
+        display_message "${BLUE}" "#######################################################"
         display_message "${NC}" ""
 
        display_message "${YELLOW}" "\n#######################################################"
